@@ -2,7 +2,7 @@
 #include <QApplication>
 #include <QTextCodec>
 
-#include <iostream>
+#include "database.h"
 
 
 int main(int argc, char *argv[])
@@ -11,7 +11,11 @@ int main(int argc, char *argv[])
     QTextCodec::setCodecForLocale(codec);
 
     QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
+
+    DataBase db;
+
+    MainWindow W;
+    W.show();
+
     return a.exec();
 }

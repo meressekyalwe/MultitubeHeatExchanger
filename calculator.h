@@ -29,9 +29,18 @@ public:
     void EquivalentAnnulusDiameter(DesignData* DesignData); // эквивалентный диаметр по межтрубному пространству
 
     // процедура расчета поверхности теплопередачи
+    void FluidSpeed(DesignData* DesignData, Fluid* Fluid);
 
+    void ReynoldsNumber(DesignData* DesignData, Fluid* Fluid);
+
+    void NusseltNumber(DesignData* DesignData, Fluid* Fluid);
+
+    void HeatTransfertCoefficient(DesignData* DesignData, Fluid* Fluid);
+
+    void AreaRequired(DesignData* DesignData, Fluid* Fluid);
 
     // процедура расчета коэффициента теплопередачи
+
 
 
 

@@ -54,12 +54,12 @@ Fluid::Fluid()
     // расход
     QObject::connect(SliderFlow, &QSlider::valueChanged, [=](int value){FlowValue->setValue(static_cast<double>(value) / 1000);});
     QObject::connect(FlowValue, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
-    [=](float value){SliderFlow->setValue(static_cast<double>(value * 1000)); setFlow(value);});
+    [=](float value){SliderFlow->setValue(static_cast<double>(value * 1000));});
 
     // температура
     QObject::connect(SliderTemperature, &QSlider::valueChanged, TemperatureValue, &QSpinBox::setValue);
     QObject::connect(TemperatureValue, qOverload<int>(&QSpinBox::valueChanged),
-    [=](int value){SliderTemperature->setValue(value); setInitialTemperature(value);});
+    [=](int value){SliderTemperature->setValue(value);});
 
 }
 

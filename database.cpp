@@ -1,31 +1,27 @@
 #include "database.h"
 #include <QDebug>
+#include <QApplication>
 #include <QSqlError>
-#include <QString>
-#include <QFile>
 
-
-Database::Database(QObject *parent)
-    : QObject{parent}
+DataBase::DataBase()
 {
-    db = QSqlDatabase::addDatabase("QSQLITE", "SQLITE");
-    db.setDatabaseName("database.db");
-    db.open();
-}
+    QSqlDatabase::addDatabase("QSQLITE");
+    setHostName("bigblue");
+    setDatabaseName("database.db");
+    setUserName("acarlson");
+    setPassword("1uTbSbAs");
+    bool ok = open();
 
-void Database::Test(QString name)
-{
-    statement = "select * from thermal_conductivity";
-    query.prepare(statement);
-
-    if (!query.exec())
+    if (ok)
     {
-        qDebug() << "Query failed!";
-        qDebug() << query.lastError();
-
+     qDebug() << "DB opened !";
     }
     else
     {
-        qDebug() << "Query succed!";
+        qDebug() << QSqlDatabase::lastError();
+        qDebug() << isDriverAvailable("QSQLITE");
+        qDebug() << QSqlDatabase::drivers();
     }
+
+    close();
 }

@@ -5,31 +5,31 @@
 
 struct Material
 {
-    QString Name;
-    float HeatConductivity;
+    QString Name = QString("none");
+    float HeatConductivity = 0.f;
 };
 
 struct FluidPhysicalProperties
 {
-    float MolarMass; // молярная масса
-    float Flow; // расход
-    int InitialTemperature; // начальная температура
-    int FinalTemperature; // конечная температура
-    float Density; // плотность
-    float HeatCapacity; // теплоемкость
-    float Viscosity; // вязкость
-    float HeatConductivity; // коэф. теплопровдности жидкости
+    float MolarMass = 0.f; // молярная масса
+    float Flow = 0.f; // расход
+    int InitialTemperature = 0; // начальная температура
+    int FinalTemperature = 0; // конечная температура
+    float Density = 0.f; // плотность
+    float HeatCapacity = 0.f; // теплоемкость
+    float Viscosity = 0.f; // вязкость
+    float HeatConductivity = 0.f; // коэф. теплопровдности жидкости
 };
 
 struct DesignData
 {
-    float Length; // длина аппарата
-    float ShellDiameter; // диаметр корпуса
-    float TubeOuterDiameter; // наружны диметр трубы
-    float WallThickness; // тольщина стенки
-    int NumberOfTube; // число труб
-    int NumberOfPasses; // число ходов
-    float Time; // время
+    float Length = 0.f; // длина аппарата
+    float ShellDiameter = 0.f; // диаметр корпуса
+    float TubeOuterDiameter = 0.f; // наружны диметр трубы
+    float WallThickness = 0.f; // тольщина стенки
+    int NumberOfTube = 0; // число труб
+    int NumberOfPasses = 0; // число ходов
+    float Time = 0.f; // время
 };
 
 

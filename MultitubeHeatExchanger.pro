@@ -1,11 +1,12 @@
-QT       += core gui \
-            core
+QT  += core gui
+QT +=  core
 
 greaterThan(QT_MAJOR_VERSION, 4):
 
-QT += widgets \
-      sql \
-      uitools \
+QT += widgets
+QT += uitools
+QT += sql
+
 
 CONFIG += c++17
 
@@ -15,6 +16,7 @@ CONFIG += c++17
 
 SOURCES += \
     calculator.cpp \
+    database.cpp \
     designparameters.cpp \
     fluid.cpp \
     givenwidget.cpp \
@@ -25,6 +27,7 @@ SOURCES += \
 HEADERS += \
     Types.h \
     calculator.h \
+    database.h \
     designparameters.h \
     fluid.h \
     givenwidget.h \

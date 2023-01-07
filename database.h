@@ -4,33 +4,22 @@
 #include <QObject>
 #include <QSqlDatabase>
 #include <QSqlQuery>
+#include <QVector>
 #include <QSqlRecord>
-#include <QTSql>
+#include <QTime>
 
-struct Data
+
+
+class DataBase : public QSqlDatabase
 {
-    QString name;
-    int value;
-};
-
-class Database : public QObject
-{
-    Q_OBJECT
-public:
-    explicit Database(QObject *parent = nullptr);
-
-signals:
 
 public:
 
-    void Test(QString name);
+    DataBase();
 
-private:
-    QSqlDatabase db;
-    QSqlQuery query;
-    QString statement;
-    bool ok = false;
-    QSqlRecord rec;
+    QSqlQuery* query;
+    QString* statement;
+    QSqlRecord* rec;
 };
 
 #endif // DATABASE_H
