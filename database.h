@@ -2,24 +2,25 @@
 #define DATABASE_H
 
 #include <QObject>
-#include <QSqlDatabase>
-#include <QSqlQuery>
+#include <QtSql>
 #include <QVector>
-#include <QSqlRecord>
-#include <QTime>
 
 
 
-class DataBase : public QSqlDatabase
+class DataBase : public QObject
 {
 
 public:
 
     DataBase();
 
-    QSqlQuery* query;
-    QString* statement;
-    QSqlRecord* rec;
+    void test();
+
+
+
+private:
+    //
+    QSqlDatabase db;
 };
 
 #endif // DATABASE_H

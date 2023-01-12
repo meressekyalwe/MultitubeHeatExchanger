@@ -1,11 +1,8 @@
-QT  += core gui
-QT +=  core
-
-greaterThan(QT_MAJOR_VERSION, 4):
-
-QT += widgets
-QT += uitools
+QT += core gui
 QT += sql
+QT += uitools
+
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 
 CONFIG += c++17

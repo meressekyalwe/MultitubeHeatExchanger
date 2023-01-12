@@ -2,26 +2,44 @@
 #include <QDebug>
 #include <QApplication>
 #include <QSqlError>
+#include <QSqlDriver>
 
 DataBase::DataBase()
 {
-    QSqlDatabase::addDatabase("QSQLITE");
-    setHostName("bigblue");
-    setDatabaseName("database.db");
-    setUserName("acarlson");
-    setPassword("1uTbSbAs");
-    bool ok = open();
+    db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("database.db");
 
-    if (ok)
+    db.open();
+
+    if(!db.isOpen())
     {
-     qDebug() << "DB opened !";
+        qDebug() << "Cannot open database:" << db.lastError();
     }
     else
     {
-        qDebug() << QSqlDatabase::lastError();
-        qDebug() << isDriverAvailable("QSQLITE");
-        qDebug() << QSqlDatabase::drivers();
+        //qDebug() << "Ok";
     }
 
-    close();
+    //db.close();
+}
+
+void DataBase::test()
+{
+
+    if (db.isOpen())
+    {
+        QString query = "select * from вязкость;";
+        QSqlQuery sqlQ(db);
+
+        if(!sqlQ.exec(query)) {
+            qDebug() << "query failed...";
+            return;
+        }
+
+
+        while (sqlQ.next())
+        {
+            qDebug() << sqlQ.value(0).toString(),sqlQ.value(3).toFloat();
+        }
+    }
 }
