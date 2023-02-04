@@ -4,7 +4,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
 {
     Given = new GivenWidget;
-    Label = new QLabel;
+    Label = new QGroupBox;
     HBoxLayout = new QHBoxLayout;
 
     HBoxLayout->addWidget(Given, 20);

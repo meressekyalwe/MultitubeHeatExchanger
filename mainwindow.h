@@ -34,7 +34,7 @@ public:
 private:
 
     GivenWidget* Given;
-    QLabel* Label;
+    QGroupBox* Label;
     QHBoxLayout* HBoxLayout;
 
 

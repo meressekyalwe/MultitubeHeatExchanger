@@ -14,9 +14,15 @@ public:
 
     DataBase();
 
-    void test();
+    void LinearInterpolation(float& Temp0, float& Temp1, float& Temp, float& Value0, float& Value1, float& InterpValue);
 
+    float GetDensity(float Temperature, QString Substance = QString(tr("Вода")));
 
+    float GetViscosity(float Temperature, QString Substance = QString(tr("Вода")));
+
+    float GetHeatCapacity(float Temperature, QString Substance = QString(tr("Вода")));
+
+    float GetHeatConductivity(float Temperature, QString Substance = QString(tr("Вода")));
 
 private:
     //

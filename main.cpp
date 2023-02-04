@@ -13,10 +13,10 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     DataBase db;
-    db.test();
+    db.GetHeatCapacity(50.f, QString("Этанол"));
 
-    MainWindow W;
-    W.show();
+    //MainWindow W;
+    //W.show();
 
     return a.exec();
 }
