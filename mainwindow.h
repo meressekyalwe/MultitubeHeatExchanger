@@ -12,6 +12,7 @@
 
 #include "givenwidget.h"
 #include "calculator.h"
+#include "toolbar.h"
 
 class MainWindow : public QWidget
 {
@@ -29,14 +30,19 @@ public:
 
     void CalculateHeatTransferCoefficient();
 
+    void Calculate();
+
+    void setTextLabel();
+
     ~MainWindow();
 
 private:
 
     GivenWidget* Given;
-    QGroupBox* Label;
+    QLabel* Label;
+    ToolBar* pToolBar;
+    QVBoxLayout* VBoxLayout;
     QHBoxLayout* HBoxLayout;
-
 
     Calculator* Calcul;
 };

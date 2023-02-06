@@ -6,11 +6,6 @@ Calculator::Calculator(QObject *parent)
 
 }
 
-void Calculator::LinearInterpolation(Fluid *Fluid)
-{
-
-}
-
 void Calculator::CalculateDensity(Fluid *Fluid)
 {
 

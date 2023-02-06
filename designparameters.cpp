@@ -5,14 +5,12 @@ DesignParameters::DesignParameters()
     Data = new DesignData{};
 
     setTitle(tr("Конструктивные параметры аппарата"));
-    Parser = new ParserText;
 
     HBoxLayoutMaterial = new QHBoxLayout;
     DescriptionMaterial = new QLabel(tr("Материал аппарата "));
-    NameMaterial = new QComboBox;
+    SelectMaterial = new QComboBox;
     HBoxLayoutMaterial->addWidget(DescriptionMaterial, 60);
-    HBoxLayoutMaterial->addWidget(NameMaterial, 40);
-    Parser->ThermalConductivity(NameMaterial);
+    HBoxLayoutMaterial->addWidget(SelectMaterial, 40);
 
     HBoxLayoutLength = new QHBoxLayout;
     DescriptionLength = new QLabel(tr("Длина \nаппарата, м "));

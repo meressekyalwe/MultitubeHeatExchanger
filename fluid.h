@@ -11,7 +11,6 @@
 #include <QComboBox>
 
 #include "Types.h"
-#include "parsertext.h"
 
 class Fluid : public QGroupBox
 {
@@ -21,22 +20,22 @@ public:
 
     Fluid();
 
-private slots:
+    QComboBox* SelectComponent;
 
-    void setFlow(float value);
+    void setFlow();
 
-    void setInitialTemperature(int value);
+    void setInitialTemperature();
+
+    void selectComponent();
 
     //void set
 
     Fluid* getFluid();
 
-    FluidPhysicalProperties* getFluidPhysicalProperties();
+    FluidPhysicalProperties getFluidPhysicalProperties();
 
-private:
 
-    FluidPhysicalProperties* Properties;
-    QComboBox* SelectComponent;
+    FluidPhysicalProperties Properties;
     QLabel* NameComponent;
     QHBoxLayout* HBoxLayoutComponent;
 
@@ -51,8 +50,6 @@ private:
     QHBoxLayout* HBoxLayoutTemperature;
 
     QVBoxLayout* VBoxLayout;
-
-    ParserText* Parser;
 };
 
 #endif // FLUID_H

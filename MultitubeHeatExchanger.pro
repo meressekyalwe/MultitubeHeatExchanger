@@ -19,7 +19,7 @@ SOURCES += \
     givenwidget.cpp \
     main.cpp \
     mainwindow.cpp \
-    parsertext.cpp \
+    toolbar.cpp
 
 HEADERS += \
     Types.h \
@@ -29,7 +29,7 @@ HEADERS += \
     fluid.h \
     givenwidget.h \
     mainwindow.h \
-    parsertext.h \
+    toolbar.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

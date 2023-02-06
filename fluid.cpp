@@ -37,11 +37,6 @@ Fluid::Fluid()
     TemperatureValue->setRange(0, 100);
     TemperatureValue->setSingleStep(1);
 
-    // parse density
-    Parser->Density(SelectComponent);
-
-
-
     HBoxLayoutTemperature->addWidget(DescriptionTemperature, 30);
     HBoxLayoutTemperature->addWidget(SliderTemperature, 40);
     HBoxLayoutTemperature->addWidget(TemperatureValue, 30);
@@ -63,15 +58,19 @@ Fluid::Fluid()
 
 }
 
-
-void Fluid::setFlow(float value)
+void Fluid::setFlow()
 {
-    Properties->Flow = value;
+    Properties.Flow = FlowValue->value();
 }
 
-void Fluid::setInitialTemperature(int value)
+void Fluid::setInitialTemperature()
 {
-    Properties->InitialTemperature = value;
+    Properties.InitialTemperature = TemperatureValue->value();
+}
+
+void Fluid::selectComponent()
+{
+    Properties.Name = SelectComponent->currentText();
 }
 
 Fluid* Fluid::getFluid()
@@ -79,7 +78,7 @@ Fluid* Fluid::getFluid()
     return this;
 }
 
-FluidPhysicalProperties* Fluid::getFluidPhysicalProperties()
+FluidPhysicalProperties Fluid::getFluidPhysicalProperties()
 {
     return Properties;
 }

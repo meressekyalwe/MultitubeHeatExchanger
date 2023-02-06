@@ -6,11 +6,13 @@
 struct Material
 {
     QString Name = QString("none");
+    float Density = 0.f;
     float HeatConductivity = 0.f;
 };
 
 struct FluidPhysicalProperties
 {
+    QString Name; // Имя вещества
     float MolarMass = 0.f; // молярная масса
     float Flow = 0.f; // расход
     int InitialTemperature = 0; // начальная температура

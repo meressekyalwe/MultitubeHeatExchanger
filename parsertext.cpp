@@ -29,8 +29,9 @@ void ParserText::ThermalConductivity(QComboBox* ComboBox)
                  stream >> name;
                  stream >> value;
 
-                 ComboBox->addItem(name, value);
+                 // ComboBox->addItem(name, value);
             }
+
             file.close();
     }
 }
@@ -49,7 +50,7 @@ void ParserText::Density(QComboBox *ComboBox)
 
                  stream >> name;
 
-                 ComboBox->addItem(name);
+                 // ComboBox->addItem(name);
             }
 
             file.close();

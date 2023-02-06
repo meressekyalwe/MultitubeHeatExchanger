@@ -43,12 +43,6 @@ public:
 
 
 
-
-private:
-
-     void LinearInterpolation(Fluid* Fluid);
-
-
 };
 
 

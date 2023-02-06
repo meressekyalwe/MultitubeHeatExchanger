@@ -24,6 +24,11 @@ public:
 
     float GetHeatConductivity(float Temperature, QString Substance = QString(tr("Вода")));
 
+    //
+    void GetListOfAllSubstances(QComboBox* ComboBox);
+
+    void GetListOfAllMaterials(QComboBox* ComboBox);
+
 private:
     //
     QSqlDatabase db;

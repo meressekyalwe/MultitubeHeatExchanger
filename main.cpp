@@ -2,8 +2,6 @@
 #include <QApplication>
 #include <QTextCodec>
 
-#include "database.h"
-
 
 int main(int argc, char *argv[])
 {
@@ -12,11 +10,8 @@ int main(int argc, char *argv[])
 
     QApplication a(argc, argv);
 
-    DataBase db;
-    db.GetHeatCapacity(50.f, QString("Этанол"));
-
-    //MainWindow W;
-    //W.show();
+    MainWindow W;
+    W.show();
 
     return a.exec();
 }

@@ -14,7 +14,6 @@
 #include <QDoubleSpinBox>
 
 #include "Types.h"
-#include "parsertext.h"
 
 class DesignParameters : public QGroupBox
 {
@@ -28,6 +27,8 @@ public:
 
     DesignData* getData();
 
+    QComboBox* SelectMaterial;
+
 private:
 
     DesignData* Data;
@@ -35,7 +36,6 @@ private:
     // материал аппарата
     QHBoxLayout* HBoxLayoutMaterial;
     QLabel* DescriptionMaterial;
-    QComboBox* NameMaterial;
 
     // длина аппарата
     QHBoxLayout* HBoxLayoutLength;
@@ -77,10 +77,7 @@ private:
     QLabel* DescriptionTime;
     QLineEdit* TimeValue;
 
-
     QDoubleValidator* Validator = new QDoubleValidator(0.0, 5.0, 6);
-
-    ParserText* Parser;
 };
 
 #endif // DESIGNPARAMETERS_H

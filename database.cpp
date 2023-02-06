@@ -13,11 +13,11 @@ DataBase::DataBase()
 
     if(!db.isOpen())
     {
-        qDebug() << "Cannot open database:" << db.lastError();
+        // qDebug() << "Cannot open database:" << db.lastError();
     }
     else
     {
-        qDebug() << "database opened";
+        // qDebug() << "database opened";
     }
 
     //db.close();
@@ -35,14 +35,19 @@ float DataBase::GetDensity(float Temperature, QString Substance)
 
     if (Temperature <= 0 || Temperature <= 100)
     {
+        int Step = 20;
         // найти интервал
-        float Temp0 = ((int)Temperature / 20) * 20;
-        float Temp1 = Temp0 + 20;
-        if (Temp1 > 100) Temp1 = 100;
+        float Temp0 = ((int)Temperature / Step) * Step;
+        float Temp1 = Temp0 + Step;
+        if (Temp1 >= 100)
+        {
+            Temp1 = 100;
+            Temp0 = 100 - Step;
+        }
 
         // SQL ЗАПРОС
         QSqlQuery query(db);
-        QSqlRecord rec = query.record();
+        // QSqlRecord rec = query.record();
 
         if(!query.exec("SELECT * FROM плотность WHERE наименование = '" + Substance +"';"))
         {
@@ -62,7 +67,7 @@ float DataBase::GetDensity(float Temperature, QString Substance)
 
       LinearInterpolation(Temp0, Temp1, Temperature, Value0, Value1, Density);
 
-        qDebug() << Density;
+        // qDebug() << Density;
     }
 
     return Density;
@@ -75,14 +80,28 @@ float DataBase::GetViscosity(float Temperature, QString Substance)
 
     if (Temperature <= 0 || Temperature <= 100)
     {
+        int Step = 10;
         // найти интервал
-        float Temp0 = ((int)Temperature / 10) * 10;
-        float Temp1 = Temp0 + 10;
-        if (Temp1 > 100) Temp1 = 100;
+        float Temp0 = ((int)Temperature / Step) * Step;
+        float Temp1 = Temp0 + Step;
+        if (Temp1 >= 100)
+        {
+            Temp1 = 100;
+            Temp0 = 100 - Step;
+        }
+
+        if (Temp0 == 70.f)
+        {
+            Temp0 = 60.f;
+        }
+        if (Temp1 == 70.f)
+        {
+            Temp1 = 80;
+        }
 
         // SQL ЗАПРОС
         QSqlQuery query(db);
-        QSqlRecord rec = query.record();
+        // QSqlRecord rec = query.record();
 
         if(!query.exec("SELECT * FROM вязкость WHERE наименование = '" + Substance +"';"))
         {
@@ -102,7 +121,7 @@ float DataBase::GetViscosity(float Temperature, QString Substance)
 
       LinearInterpolation(Temp0, Temp1, Temperature, Value0, Value1, Viscosity);
 
-        qDebug() << Viscosity;
+        // qDebug() << Viscosity;
     }
 
     return Viscosity;
@@ -115,14 +134,19 @@ float DataBase::GetHeatCapacity(float Temperature, QString Substance)
 
         if (Temperature <= 0 || Temperature <= 100)
         {
+            int Step = 20;
             // найти интервал
-            float Temp0 = ((int)Temperature / 20) * 20;
-            float Temp1 = Temp0 + 20;
-            if (Temp1 > 100) Temp1 = 100;
+            float Temp0 = ((int)Temperature / Step) * Step;
+            float Temp1 = Temp0 + Step;
+            if (Temp1 >= 100)
+            {
+                Temp1 = 100;
+                Temp0 = 100 - Step;
+            }
 
             // SQL ЗАПРОС
             QSqlQuery query(db);
-            QSqlRecord rec = query.record();
+            // QSqlRecord rec = query.record();
 
             if(!query.exec("SELECT * FROM теплоемкость WHERE наименование = '" + Substance +"';"))
             {
@@ -142,7 +166,7 @@ float DataBase::GetHeatCapacity(float Temperature, QString Substance)
 
           LinearInterpolation(Temp0, Temp1, Temperature, Value0, Value1, HeatCapacity);
 
-            qDebug() << HeatCapacity;
+          //  qDebug() << HeatCapacity;
         }
 
         return HeatCapacity;
@@ -154,15 +178,20 @@ float DataBase::GetHeatConductivity(float Temperature, QString Substance)
     float HeatConductivity = 0;
 
     if (Temperature <= 0 || Temperature <= 100)
-    {
-        // найти интервал
-        float Temp0 = ((int)Temperature / 25) * 25;
-        float Temp1 = Temp0 + 25;
-        if (Temp1 > 100) Temp1 = 100;
+        {
+            int Step = 25;
+            // найти интервал
+            float Temp0 = ((int)Temperature / Step) * Step;
+            float Temp1 = Temp0 + Step;
+            if (Temp1 >= 100)
+            {
+                Temp1 = 100;
+                Temp0 = 100 - Step;
+            }
 
         // SQL ЗАПРОС
         QSqlQuery query(db);
-        QSqlRecord rec = query.record();
+        // QSqlRecord rec = query.record();
 
         if(!query.exec("SELECT * FROM теплопроводность WHERE наименование = '" + Substance +"';"))
         {
@@ -182,8 +211,42 @@ float DataBase::GetHeatConductivity(float Temperature, QString Substance)
 
       LinearInterpolation(Temp0, Temp1, Temperature, Value0, Value1, HeatConductivity);
 
-        qDebug() << HeatConductivity;
+       // qDebug() << HeatConductivity;
     }
 
     return HeatConductivity;
+}
+
+void DataBase::GetListOfAllSubstances(QComboBox *ComboBox)
+{
+    QSqlQuery query(db);
+
+    if(!query.exec("SELECT * FROM температура_кипения;"))
+    {
+        qDebug() << "query failed...";
+        return;
+    }
+
+    while (query.next())
+    {
+        ComboBox->addItem(query.value(0).toString());
+        // qDebug() << query.value(0).toString();
+    }
+}
+
+void DataBase::GetListOfAllMaterials(QComboBox *ComboBox)
+{
+    QSqlQuery query(db);
+
+    if(!query.exec("SELECT * FROM физ_свойства_материала;"))
+    {
+        qDebug() << "query failed...";
+        return;
+    }
+
+    while (query.next())
+    {
+        ComboBox->addItem(query.value(0).toString());
+        // qDebug() << query.value(0).toString();
+    }
 }

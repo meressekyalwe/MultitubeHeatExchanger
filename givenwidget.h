@@ -6,6 +6,7 @@
 
 #include "fluid.h"
 #include "designparameters.h"
+#include "database.h"
 
 class GivenWidget : public QGroupBox
 {
@@ -19,14 +20,16 @@ public:
 
     Fluid* getColdWater();
 
+    void GetFromDatabase();
+
     DesignParameters* getDesignDataClass();
 
-private:
 
-    Fluid* HotWater;
-    Fluid* ColdWater;
+    Fluid* HotFluid;
+    Fluid* ColdFluid;
     DesignParameters* DesignDataClass;
     QVBoxLayout* VBoxLayout;
+    DataBase* Db;
 };
 
 #endif // GIVENWIDGET_H
