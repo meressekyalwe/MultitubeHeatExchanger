@@ -23,6 +23,11 @@ GivenWidget::GivenWidget()
     Db->GetListOfAllSubstances(HotFluid->SelectComponent);
     Db->GetListOfAllSubstances(ColdFluid->SelectComponent);
     Db->GetListOfAllMaterials(DesignDataClass->SelectMaterial);
+
+    setAlignment(Qt::AnchorVerticalCenter | Qt::AnchorHorizontalCenter);
+
+    HotFluid->Hot = true;
+    ColdFluid->Hot = false;
 }
 
 Fluid* GivenWidget::getHotWater()
@@ -50,6 +55,9 @@ void GivenWidget::GetFromDatabase()
     ColdFluid->Properties.HeatCapacity = Db->GetHeatCapacity(Temp2, Name2);
     ColdFluid->Properties.HeatConductivity = Db->GetHeatConductivity(Temp2, Name2);
     ColdFluid->Properties.Viscosity = Db->GetViscosity(Temp2, Name2);
+
+    QString NameMaterial = DesignDataClass->Material.Name;
+    DesignDataClass->Material.HeatConductivity = Db->GetHeatConductivityMaterial(NameMaterial);
 }
 
 DesignParameters* GivenWidget::getDesignDataClass()

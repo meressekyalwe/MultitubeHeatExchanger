@@ -29,6 +29,8 @@ public:
 
     void GetListOfAllMaterials(QComboBox* ComboBox);
 
+    float GetHeatConductivityMaterial(QString Material);
+
 private:
     //
     QSqlDatabase db;

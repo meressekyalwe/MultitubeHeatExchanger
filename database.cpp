@@ -80,7 +80,9 @@ float DataBase::GetViscosity(float Temperature, QString Substance)
 
     if (Temperature <= 0 || Temperature <= 100)
     {
+
         int Step = 10;
+        if (Temperature >= 60) Step = 20;
         // найти интервал
         float Temp0 = ((int)Temperature / Step) * Step;
         float Temp1 = Temp0 + Step;
@@ -88,15 +90,6 @@ float DataBase::GetViscosity(float Temperature, QString Substance)
         {
             Temp1 = 100;
             Temp0 = 100 - Step;
-        }
-
-        if (Temp0 == 70.f)
-        {
-            Temp0 = 60.f;
-        }
-        if (Temp1 == 70.f)
-        {
-            Temp1 = 80;
         }
 
         // SQL ЗАПРОС
@@ -169,7 +162,7 @@ float DataBase::GetHeatCapacity(float Temperature, QString Substance)
           //  qDebug() << HeatCapacity;
         }
 
-        return HeatCapacity;
+        return 4.190f *HeatCapacity;
 }
 
 float DataBase::GetHeatConductivity(float Temperature, QString Substance)
@@ -249,4 +242,26 @@ void DataBase::GetListOfAllMaterials(QComboBox *ComboBox)
         ComboBox->addItem(query.value(0).toString());
         // qDebug() << query.value(0).toString();
     }
+}
+
+float DataBase::GetHeatConductivityMaterial(QString Material)
+{
+    QSqlQuery query(db);
+    float Value = 0.0f;
+
+    if(!query.exec("SELECT * FROM физ_свойства_материала;"))
+    {
+        qDebug() << "query failed...";
+        return -1;
+    }
+
+    while (query.next())
+    {
+        if (query.value(0).toString() == Material)
+        {
+            Value = query.value(1).toFloat();
+        }
+    }
+
+    return Value;
 }

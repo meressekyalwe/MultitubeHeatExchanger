@@ -23,15 +23,27 @@ public:
 
     DesignParameters();
 
-    void setData(float ShellDiameter, float TubeOuterDiameter, float WallThickness, float Time);
+    void setData();
 
-    DesignData* getData();
+    DesignData getData();
+
+    void SetMaterial();
 
     QComboBox* SelectMaterial;
 
-private:
+    DesignData Data;
 
-    DesignData* Data;
+    Material Material;
+
+    // конструктивные расчёты
+    float Cross_SectionalAreaOfTubeSpace(); // плошадь поперечного сечения трубного пространства
+
+    float AnnulusCross_SectionalArea(); // площадь поперечного сечения межтрубного пространства
+
+    float EquivalentAnnulusDiameter(); // эквивалентный диаметр по межтрубному пространству
+
+
+private:
 
     // материал аппарата
     QHBoxLayout* HBoxLayoutMaterial;

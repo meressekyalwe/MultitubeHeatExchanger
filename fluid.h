@@ -18,6 +18,8 @@ class Fluid : public QGroupBox
 
 public:
 
+    bool Hot = false;
+
     Fluid();
 
     QComboBox* SelectComponent;
@@ -28,7 +30,7 @@ public:
 
     void selectComponent();
 
-    //void set
+    float Surface = 0.f;
 
     Fluid* getFluid();
 

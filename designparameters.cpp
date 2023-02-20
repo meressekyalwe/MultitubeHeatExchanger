@@ -1,9 +1,8 @@
 #include "designparameters.h"
+#include "cmath"
 
 DesignParameters::DesignParameters()
 {
-    Data = new DesignData{};
-
     setTitle(tr("Конструктивные параметры аппарата"));
 
     HBoxLayoutMaterial = new QHBoxLayout;
@@ -96,34 +95,59 @@ DesignParameters::DesignParameters()
     QObject::connect(SliderLength, &QSlider::valueChanged,
     [=](int value){LengthValue->setValue(static_cast<double>(value) / 40);});
     QObject::connect(LengthValue, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
-    [=](float value){SliderLength->setValue(value * 40); Data->Length = value;});
+    [=](float value){SliderLength->setValue(value * 40);});
 
     // число труб
     QObject::connect(SliderNumberPipe, &QSlider::valueChanged,
     [=](int value){ValueNumberPipe->setValue(value / 10);});
     QObject::connect(ValueNumberPipe, qOverload<int>(&QSpinBox::valueChanged),
-    [=](int value){SliderNumberPipe->setValue(value * 10); Data->NumberOfTube = value;});
+    [=](int value){SliderNumberPipe->setValue(value * 10);});
 
     // число ходов
     QObject::connect(SliderNumberPasses, &QSlider::valueChanged,
     [=](int value){ValueNumberPasses->setValue(value / 10);});
     QObject::connect(ValueNumberPasses, qOverload<int>(&QSpinBox::valueChanged),
-    [=](int value){SliderNumberPasses->setValue(value * 10); Data->NumberOfPasses = value;});
-
+    [=](int value){SliderNumberPasses->setValue(value * 10);});
 
     setLayout(VBoxLayout);
 }
 
-void DesignParameters::setData(float ShellDiameter, float TubeOuterDiameter, float WallThickness, float Time)
+void DesignParameters::setData()
 {
-    Data->ShellDiameter = ShellDiameter;
-    Data->TubeOuterDiameter = TubeOuterDiameter;
-    Data->WallThickness = WallThickness;
-    Data->Time = Time;
+    Data.Length = LengthValue->value();
+    Data.NumberOfTube = ValueNumberPipe->value();
+    Data.NumberOfPasses = ValueNumberPasses->value();
+    Data.ShellDiameter = DiameterValue->text().toFloat();
+    Data.TubeOuterDiameter = TubeOuterDiameterValue->text().toFloat();
+    Data.WallThickness = WallThicknessValue->text().toFloat();
+    Data.Time = TimeValue->text().toFloat();
+    Material.Name = SelectMaterial->currentText();
 }
 
-DesignData* DesignParameters::getData()
+DesignData DesignParameters::getData()
 {
     return Data;
+}
+
+void DesignParameters::SetMaterial()
+{
+    Material.Name = SelectMaterial->currentText();
+}
+
+float DesignParameters::Cross_SectionalAreaOfTubeSpace()
+{
+    float InnerDiameter = Data.TubeOuterDiameter - 2 * Data.WallThickness;
+
+    return std::pow(InnerDiameter, 2) * 0.785 * Data.NumberOfTube / Data.NumberOfPasses;
+}
+
+float DesignParameters::AnnulusCross_SectionalArea()
+{
+    return 0.785 * (std::pow(Data.ShellDiameter, 2) - Data.NumberOfTube * std::pow(Data.TubeOuterDiameter, 2));
+}
+
+float DesignParameters::EquivalentAnnulusDiameter()
+{
+    return (std::pow(Data.ShellDiameter, 2) - Data.NumberOfTube * std::pow(Data.TubeOuterDiameter, 2)) / (Data.ShellDiameter + Data.NumberOfTube * Data.TubeOuterDiameter);
 }
 

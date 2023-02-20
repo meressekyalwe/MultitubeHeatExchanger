@@ -15,6 +15,8 @@ public:
 
     QPushButton* Run;
     QPushButton* Clear;
+    QPushButton* Print;
+    QPushButton* Help;
 
 signals:
 

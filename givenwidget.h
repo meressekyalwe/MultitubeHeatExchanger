@@ -20,10 +20,9 @@ public:
 
     Fluid* getColdWater();
 
-    void GetFromDatabase();
-
     DesignParameters* getDesignDataClass();
 
+    void GetFromDatabase();
 
     Fluid* HotFluid;
     Fluid* ColdFluid;
