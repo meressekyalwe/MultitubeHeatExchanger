@@ -9,8 +9,7 @@
 #include <QVBoxLayout>
 #include <QDoubleSpinBox>
 #include <QComboBox>
-
-#include "Types.h"
+#include "database.h"
 
 class Fluid : public QGroupBox
 {
@@ -18,26 +17,10 @@ class Fluid : public QGroupBox
 
 public:
 
-    bool Hot = false;
-
-    Fluid();
+    Fluid(DataBase& db);
 
     QComboBox* SelectComponent;
 
-    void setFlow();
-
-    void setInitialTemperature();
-
-    void selectComponent();
-
-    float Surface = 0.f;
-
-    Fluid* getFluid();
-
-    FluidPhysicalProperties getFluidPhysicalProperties();
-
-
-    FluidPhysicalProperties Properties;
     QLabel* NameComponent;
     QHBoxLayout* HBoxLayoutComponent;
 

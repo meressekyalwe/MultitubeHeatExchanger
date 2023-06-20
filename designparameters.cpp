@@ -1,7 +1,6 @@
 #include "designparameters.h"
-#include "cmath"
 
-DesignParameters::DesignParameters()
+DesignParameters::DesignParameters(DataBase& db)
 {
     setTitle(tr("Конструктивные параметры аппарата"));
 
@@ -22,7 +21,7 @@ DesignParameters::DesignParameters()
     SliderLength->setRange(20, 120);
     SliderLength->setSingleStep(25);
     LengthValue->setRange(0.5, 3);
-    LengthValue->setSingleStep(0.25);
+    LengthValue->setSingleStep(0.75);
 
     // число труб
     HBoxLayoutNumberPipe = new QHBoxLayout;
@@ -47,10 +46,11 @@ DesignParameters::DesignParameters()
     ValueNumberPasses->setAlignment(Qt::AlignRight);
     SliderNumberPasses->setRange(10, 40);
     ValueNumberPasses->setRange(1, 4);
+    ValueNumberPasses->setValue(1);
 
     HBoxLayoutDiameter = new QHBoxLayout;
     DescriptionDiameter = new QLabel(tr("Внутр. диаметр корпуса, м "));
-    DiameterValue = new QLineEdit;
+    DiameterValue = new QLineEdit("0.6");
     HBoxLayoutDiameter->addWidget(DescriptionDiameter, 70);
     HBoxLayoutDiameter->addWidget(DiameterValue, 30);
     DiameterValue->setValidator(Validator);
@@ -58,7 +58,7 @@ DesignParameters::DesignParameters()
 
     HBoxLayoutTubeOuterDiameter = new QHBoxLayout;
     DescriptionTubeOuterDiameter = new QLabel(tr("Наружный диаметр труб, м "));
-    TubeOuterDiameterValue = new QLineEdit;
+    TubeOuterDiameterValue = new QLineEdit("0.02");
     HBoxLayoutTubeOuterDiameter->addWidget(DescriptionTubeOuterDiameter, 70);
     HBoxLayoutTubeOuterDiameter->addWidget(TubeOuterDiameterValue, 30);
     TubeOuterDiameterValue->setValidator(Validator);
@@ -66,7 +66,7 @@ DesignParameters::DesignParameters()
 
     HBoxLayoutWallThickness = new QHBoxLayout;
     DescriptionWallThickness = new QLabel(tr("Толщина стенки труб, м "));
-    WallThicknessValue = new QLineEdit;
+    WallThicknessValue = new QLineEdit("0.002");
     HBoxLayoutWallThickness->addWidget(DescriptionWallThickness, 70);
     HBoxLayoutWallThickness->addWidget(WallThicknessValue, 30);
     WallThicknessValue->setValidator(Validator);
@@ -75,7 +75,7 @@ DesignParameters::DesignParameters()
     // время
     HBoxLayoutTime = new QHBoxLayout;
     DescriptionTime = new QLabel(tr("Время, с "));
-    TimeValue = new QLineEdit;
+    TimeValue = new QLineEdit("900");
     TimeValue->setAlignment(Qt::AlignRight);
     TimeValue->setValidator(Validator);
     HBoxLayoutTime->addWidget(DescriptionTime, 70);
@@ -110,44 +110,10 @@ DesignParameters::DesignParameters()
     [=](int value){SliderNumberPasses->setValue(value * 10);});
 
     setLayout(VBoxLayout);
+
+    db.GetListOfAllMaterials(SelectMaterial);
 }
 
-void DesignParameters::setData()
-{
-    Data.Length = LengthValue->value();
-    Data.NumberOfTube = ValueNumberPipe->value();
-    Data.NumberOfPasses = ValueNumberPasses->value();
-    Data.ShellDiameter = DiameterValue->text().toFloat();
-    Data.TubeOuterDiameter = TubeOuterDiameterValue->text().toFloat();
-    Data.WallThickness = WallThicknessValue->text().toFloat();
-    Data.Time = TimeValue->text().toFloat();
-    Material.Name = SelectMaterial->currentText();
-}
 
-DesignData DesignParameters::getData()
-{
-    return Data;
-}
 
-void DesignParameters::SetMaterial()
-{
-    Material.Name = SelectMaterial->currentText();
-}
-
-float DesignParameters::Cross_SectionalAreaOfTubeSpace()
-{
-    float InnerDiameter = Data.TubeOuterDiameter - 2 * Data.WallThickness;
-
-    return std::pow(InnerDiameter, 2) * 0.785 * Data.NumberOfTube / Data.NumberOfPasses;
-}
-
-float DesignParameters::AnnulusCross_SectionalArea()
-{
-    return 0.785 * (std::pow(Data.ShellDiameter, 2) - Data.NumberOfTube * std::pow(Data.TubeOuterDiameter, 2));
-}
-
-float DesignParameters::EquivalentAnnulusDiameter()
-{
-    return (std::pow(Data.ShellDiameter, 2) - Data.NumberOfTube * std::pow(Data.TubeOuterDiameter, 2)) / (Data.ShellDiameter + Data.NumberOfTube * Data.TubeOuterDiameter);
-}
 

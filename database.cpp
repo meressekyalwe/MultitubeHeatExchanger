@@ -13,14 +13,12 @@ DataBase::DataBase()
 
     if(!db.isOpen())
     {
-        // qDebug() << "Cannot open database:" << db.lastError();
+        qDebug() << "Cannot open database:" << db.lastError();
     }
     else
     {
-        // qDebug() << "database opened";
+        qDebug() << "database opened";
     }
-
-    //db.close();
 }
 
 void DataBase::LinearInterpolation(float& Temp0, float& Temp1, float& Temp, float& Value0, float& Value1, float& InterpValue)
@@ -162,7 +160,7 @@ float DataBase::GetHeatCapacity(float Temperature, QString Substance)
           //  qDebug() << HeatCapacity;
         }
 
-        return 4.190f *HeatCapacity;
+        return 4.190f * HeatCapacity * 1000;
 }
 
 float DataBase::GetHeatConductivity(float Temperature, QString Substance)
@@ -259,7 +257,7 @@ float DataBase::GetHeatConductivityMaterial(QString Material)
     {
         if (query.value(0).toString() == Material)
         {
-            Value = query.value(1).toFloat();
+            Value = query.value(2).toFloat();
         }
     }
 

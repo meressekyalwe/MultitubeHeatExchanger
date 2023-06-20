@@ -12,8 +12,7 @@
 #include <QLineEdit>
 #include <QDoubleValidator>
 #include <QDoubleSpinBox>
-
-#include "Types.h"
+#include "database.h"
 
 class DesignParameters : public QGroupBox
 {
@@ -21,30 +20,11 @@ class DesignParameters : public QGroupBox
 
 public:
 
-    DesignParameters();
-
-    void setData();
-
-    DesignData getData();
-
-    void SetMaterial();
+    DesignParameters(DataBase& db);
 
     QComboBox* SelectMaterial;
 
-    DesignData Data;
-
-    Material Material;
-
-    // конструктивные расчёты
-    float Cross_SectionalAreaOfTubeSpace(); // плошадь поперечного сечения трубного пространства
-
-    float AnnulusCross_SectionalArea(); // площадь поперечного сечения межтрубного пространства
-
-    float EquivalentAnnulusDiameter(); // эквивалентный диаметр по межтрубному пространству
-
-
-private:
-
+public:
     // материал аппарата
     QHBoxLayout* HBoxLayoutMaterial;
     QLabel* DescriptionMaterial;

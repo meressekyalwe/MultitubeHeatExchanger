@@ -9,10 +9,13 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QWidget>
+#include <QScrollArea>
 
 #include "givenwidget.h"
-#include "calculator.h"
 #include "toolbar.h"
+#include "designcalculation.h"
+#include "results.h"
+#include "database.h"
 
 class MainWindow : public QWidget
 {
@@ -22,28 +25,21 @@ public:
 
     MainWindow(QWidget *parent = nullptr);
 
-    void CalculateFluidPhysicalProperties();
-
-    void  DesignCalculation();
-
-    void CalculateHeatTransferSurface();
-
-    void CalculateHeatTransferCoefficient();
-
-    void Calculate();
-
-    void setTextLabel();
+    void writeResult();
 
     ~MainWindow();
 
 private:
 
-    GivenWidget* Given;
+    GivenWidget* givenWidget;
     QLabel* Label;
+    QScrollArea* scrollArea;
     ToolBar* pToolBar;
     QVBoxLayout* VBoxLayout;
     QHBoxLayout* HBoxLayout;
+    DesignCalculation desingCalculator;
 
-    Calculator* Calcul;
+    DataBase db;
+    Results rs;
 };
 #endif // MAINWINDOW_H

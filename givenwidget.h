@@ -13,22 +13,11 @@ class GivenWidget : public QGroupBox
     Q_OBJECT
 
 public:
-
-    GivenWidget();
-
-    Fluid* getHotWater();
-
-    Fluid* getColdWater();
-
-    DesignParameters* getDesignDataClass();
-
-    void GetFromDatabase();
-
+    GivenWidget(DataBase& db);
     Fluid* HotFluid;
     Fluid* ColdFluid;
     DesignParameters* DesignDataClass;
     QVBoxLayout* VBoxLayout;
-    DataBase* Db;
 };
 
 #endif // GIVENWIDGET_H

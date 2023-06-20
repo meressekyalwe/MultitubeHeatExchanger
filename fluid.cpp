@@ -1,7 +1,7 @@
 
 #include "fluid.h"
 
-Fluid::Fluid()
+Fluid::Fluid(DataBase& db)
 {
     SelectComponent = new QComboBox;
     NameComponent = new QLabel(tr("Выбрать компонета"));
@@ -56,29 +56,14 @@ Fluid::Fluid()
     QObject::connect(TemperatureValue, qOverload<int>(&QSpinBox::valueChanged),
     [=](int value){SliderTemperature->setValue(value);});
 
+    db.GetListOfAllSubstances(SelectComponent);
 }
 
-void Fluid::setFlow()
-{
-    Properties.Flow = FlowValue->value();
-}
 
-void Fluid::setInitialTemperature()
-{
-    Properties.InitialTemperature = TemperatureValue->value();
-}
 
-void Fluid::selectComponent()
-{
-    Properties.Name = SelectComponent->currentText();
-}
 
-Fluid* Fluid::getFluid()
-{
-    return this;
-}
 
-FluidPhysicalProperties Fluid::getFluidPhysicalProperties()
-{
-    return Properties;
-}
+
+
+
+

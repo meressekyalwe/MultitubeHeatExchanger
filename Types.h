@@ -3,14 +3,22 @@
 
 #include <QString>
 
-struct Material
+struct S_Material
 {
     QString Name = QString("none");
     float Density = 0.f;
     float HeatConductivity = 0.f;
+
+    S_Material& operator = (const S_Material& other)
+    {
+        Name = other.Name;
+        Density = other.Density;
+        HeatConductivity = other.HeatConductivity;
+        return *this;
+    }
 };
 
-struct FluidPhysicalProperties
+struct S_Fluid
 {
     QString Name; // Имя вещества
     float MolarMass = 0.f; // молярная масса
@@ -23,7 +31,7 @@ struct FluidPhysicalProperties
     float HeatConductivity = 0.f; // коэф. теплопровдности жидкости
 };
 
-struct DesignData
+struct S_DesignData
 {
     float Length = 0.f; // длина аппарата
     float ShellDiameter = 0.f; // диаметр корпуса
@@ -32,6 +40,18 @@ struct DesignData
     int NumberOfTube = 0; // число труб
     int NumberOfPasses = 0; // число ходов
     float Time = 0.f; // время
+
+    S_DesignData& operator = (const S_DesignData& other)
+    {
+        Length = other.Length;
+        ShellDiameter = other.ShellDiameter;
+        TubeOuterDiameter = other.TubeOuterDiameter;
+        WallThickness = other.WallThickness;
+        NumberOfTube = other.NumberOfTube;
+        NumberOfPasses = other.NumberOfPasses;
+        Time = other.Time;
+        return *this;
+    }
 };
 
 
