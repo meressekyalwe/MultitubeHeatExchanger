@@ -22,7 +22,10 @@ GivenWidget::GivenWidget(DataBase& db)
     setAlignment(Qt::AnchorVerticalCenter | Qt::AnchorHorizontalCenter);
 
     HotFluid->TemperatureValue->setValue(70);
+    HotFluid->FlowValue->setValue(0.07);
+
     ColdFluid->TemperatureValue->setValue(20);
+    ColdFluid->FlowValue->setValue(0.07);
 }
 
 

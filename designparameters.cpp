@@ -21,7 +21,8 @@ DesignParameters::DesignParameters(DataBase& db)
     SliderLength->setRange(20, 120);
     SliderLength->setSingleStep(25);
     LengthValue->setRange(0.5, 3);
-    LengthValue->setSingleStep(0.75);
+    LengthValue->setSingleStep(0.25);
+    LengthValue->setValue(0.75);
 
     // число труб
     HBoxLayoutNumberPipe = new QHBoxLayout;

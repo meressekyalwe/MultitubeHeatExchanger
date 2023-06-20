@@ -11,9 +11,10 @@ Results::Results(QObject *parent)
 
 }
 
-void Results::setCurrentMaterial(GivenWidget* gw)
+void Results::setCurrentMaterial(GivenWidget* gw, DataBase& db)
 {
     Material.Name = gw->DesignDataClass->SelectMaterial->currentText();
+    Material.HeatConductivity = db.GetHeatConductivityMaterial(Material.Name);
 
     DesignData.Length = gw->DesignDataClass->LengthValue->value();
     DesignData.ShellDiameter = (gw->DesignDataClass->DiameterValue->text()).toFloat();
@@ -24,53 +25,61 @@ void Results::setCurrentMaterial(GivenWidget* gw)
     DesignData.Time = (gw->DesignDataClass->TimeValue->text()).toFloat();
 }
 
-void Results::setCurrentHotFluid(GivenWidget* gw)
+void Results::setCurrentHotFluid(GivenWidget* gw, DataBase& db)
 {
     HotFluid.Name = gw->HotFluid->SelectComponent->currentText();
     HotFluid.InitialTemperature = gw->HotFluid->TemperatureValue->value();
     HotFluid.Flow = gw->HotFluid->FlowValue->value();
+
+    HotFluid.Density = db.GetDensity(HotFluid.InitialTemperature, HotFluid.Name);
+    HotFluid.HeatCapacity = db.GetHeatCapacity(HotFluid.InitialTemperature, HotFluid.Name);
+    HotFluid.Viscosity = db.GetViscosity(HotFluid.InitialTemperature, HotFluid.Name);
+    HotFluid.HeatConductivity = db.GetHeatConductivity(HotFluid.InitialTemperature, HotFluid.Name);
 }
 
-void Results::setCurrentColdFluid(GivenWidget* gw)
+void Results::setCurrentColdFluid(GivenWidget* gw, DataBase& db)
 {
     ColdFluid.Name = gw->ColdFluid->SelectComponent->currentText();
     ColdFluid.InitialTemperature = gw->ColdFluid->TemperatureValue->value();
     ColdFluid.Flow = gw->ColdFluid->FlowValue->value();
+
+    ColdFluid.Density = db.GetDensity(ColdFluid.InitialTemperature, ColdFluid.Name);
+    ColdFluid.HeatCapacity = db.GetHeatCapacity(ColdFluid.InitialTemperature, ColdFluid.Name);
+    ColdFluid.Viscosity = db.GetViscosity(ColdFluid.InitialTemperature, ColdFluid.Name);
+    ColdFluid.HeatConductivity = db.GetHeatConductivity(ColdFluid.InitialTemperature, ColdFluid.Name);
 }
 
 void Results::setFromDb(DataBase& db, int t11, int t21)
 {
-    Material.HeatConductivity = db.GetHeatConductivityMaterial(Material.Name);
-
     // HotFluid
-    HotFluid.Density = db.GetDensity(t11, HotFluid.Name);
-    HotFluid.HeatCapacity = db.GetHeatCapacity(t11, HotFluid.Name);
-    HotFluid.Viscosity = db.GetViscosity(t11, HotFluid.Name);
-    HotFluid.HeatConductivity = db.GetHeatConductivity(t11, HotFluid.Name);
+    _HotFluid.Density = db.GetDensity(t11, HotFluid.Name);
+    _HotFluid.HeatCapacity = db.GetHeatCapacity(t11, HotFluid.Name);
+    _HotFluid.Viscosity = db.GetViscosity(t11, HotFluid.Name);
+    _HotFluid.HeatConductivity = db.GetHeatConductivity(t11, HotFluid.Name);
 
     // ColdFluid
-    ColdFluid.Density = db.GetDensity(t21, ColdFluid.Name);
-    ColdFluid.HeatCapacity = db.GetHeatCapacity(t21, ColdFluid.Name);
-    ColdFluid.Viscosity = db.GetViscosity(t21, ColdFluid.Name);
-    ColdFluid.HeatConductivity = db.GetHeatConductivity(t21, ColdFluid.Name);
+    _ColdFluid.Density = db.GetDensity(t21, ColdFluid.Name);
+    _ColdFluid.HeatCapacity = db.GetHeatCapacity(t21, ColdFluid.Name);
+    _ColdFluid.Viscosity = db.GetViscosity(t21, ColdFluid.Name);
+    _ColdFluid.HeatConductivity = db.GetHeatConductivity(t21, ColdFluid.Name);
 }
 
 float Results::FK(DataBase& db)
 {
     //setFromDb(db, HotFluid.InitialTemperature, ColdFluid.InitialTemperature);
-    float Pr1 = HotFluid.Viscosity * HotFluid.HeatCapacity / HotFluid.HeatConductivity;
+    float Pr1 = _HotFluid.Viscosity * _HotFluid.HeatCapacity / _HotFluid.HeatConductivity;
     float dvn = DesignCalculation::getdvn(DesignData.TubeOuterDiameter, DesignData.WallThickness);
-    float W1 = HotFluid.Flow / (HotFluid.Density * DesignCalculation::getS1(dvn, DesignData.NumberOfTube, DesignData.NumberOfPasses));
-    float Re1 = W1 * dvn * HotFluid.Density / HotFluid.Viscosity;
+    float W1 = _HotFluid.Flow / (_HotFluid.Density * DesignCalculation::getS1(dvn, DesignData.NumberOfTube, DesignData.NumberOfPasses));
+    float Re1 = W1 * dvn * _HotFluid.Density / _HotFluid.Viscosity;
     float Nu1 = Nusselt::getNusselt(Re1, Pr1, dvn, DesignData.Length);
-    float alpha1 = Nu1 * HotFluid.HeatConductivity / dvn;
+    float alpha1 = Nu1 * _HotFluid.HeatConductivity / dvn;
 
-    float Pr2 = ColdFluid.Viscosity * ColdFluid.HeatCapacity / ColdFluid.HeatConductivity;
+    float Pr2 = _ColdFluid.Viscosity * _ColdFluid.HeatCapacity / _ColdFluid.HeatConductivity;
     float deq2 = DesignCalculation::getdeq2(DesignData.ShellDiameter, DesignData.NumberOfTube, DesignData.TubeOuterDiameter);
-    float W2 = ColdFluid.Flow / (ColdFluid.Density * DesignCalculation::getS2(DesignData.ShellDiameter, DesignData.NumberOfTube, DesignData.TubeOuterDiameter));
-    float Re2 = W2 * deq2 * ColdFluid.Density / ColdFluid.Viscosity;
+    float W2 = _ColdFluid.Flow / (_ColdFluid.Density * DesignCalculation::getS2(DesignData.ShellDiameter, DesignData.NumberOfTube, DesignData.TubeOuterDiameter));
+    float Re2 = W2 * deq2 * _ColdFluid.Density / _ColdFluid.Viscosity;
     float Nu2 = Nusselt::getNusselt(Re2, Pr2, deq2, DesignData.Length);
-    float alpha2 = Nu2 * ColdFluid.HeatConductivity / deq2;
+    float alpha2 = Nu2 * _ColdFluid.HeatConductivity / deq2;
 
     return (1 / (1 / alpha1 + DesignData.WallThickness / Material.HeatConductivity + 1 / alpha2));
 }
@@ -90,9 +99,6 @@ float Results::yy(DataBase& db,int t12)
     float deltaTcp = A / std::log(x);
     float F = DesignCalculation::getF(DesignData.Length, DesignData.NumberOfTube, DesignData.TubeOuterDiameter, DesignCalculation::getdvn(DesignData.TubeOuterDiameter, DesignData.WallThickness));
     float Fp = Q / (K * deltaTcp);
-
-
-    qDebug() << tcp1 << " " << tcp2;
 
     return F - Fp;
 }
@@ -140,9 +146,9 @@ float Results::Fi(float value)
 
 void Results::Calculate(DataBase &db)
 {
-    HotFluid.FinalTemperature = met_del(db);
+    HotFluid.FinalTemperature = static_cast<int>(met_del(db));
     float Q = HotFluid.Flow * HotFluid.HeatCapacity * (HotFluid.InitialTemperature - HotFluid.FinalTemperature);
-    ColdFluid.FinalTemperature = (ColdFluid.InitialTemperature + Q / (ColdFluid.Flow * ColdFluid.HeatCapacity));
+    ColdFluid.FinalTemperature = static_cast<int>(ColdFluid.InitialTemperature + Q / (ColdFluid.Flow * ColdFluid.HeatCapacity));
 }
 
 

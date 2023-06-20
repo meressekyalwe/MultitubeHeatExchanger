@@ -53,9 +53,9 @@ MainWindow::MainWindow(QWidget *parent)
     QObject::connect(pToolBar->Run, &QPushButton::clicked,
     [=]()
     {
-        rs.setCurrentMaterial(givenWidget);
-        rs.setCurrentHotFluid(givenWidget);
-        rs.setCurrentColdFluid(givenWidget);
+        rs.setCurrentMaterial(givenWidget, db);
+        rs.setCurrentHotFluid(givenWidget, db);
+        rs.setCurrentColdFluid(givenWidget, db);
         rs.Calculate(db);
         writeResult();
     });
@@ -97,7 +97,7 @@ void MainWindow::writeResult()
     text3 += "\nТольшина стенки труб : " + QString::number(rs.DesignData.WallThickness) + " м";
     text3 += "\nВремя : " + QString::number(rs.DesignData.Time) + " с";
 
-    text3 += "\nТеплопроводности материала : " + QString::number(rs.Material.HeatConductivity);
+    text3 += "\nТеплопроводности материала : " + QString::number(rs.Material.HeatConductivity) + " Вт/м·К";
     /*
     text3 += "\nПлошадь поперечного сечения трубного пространства : " + QString::number(rs.S1);
     text3 += "\nВнутреный диаметр труб = " + QString::number(rs.dvn) + " м";

@@ -13,11 +13,11 @@ DataBase::DataBase()
 
     if(!db.isOpen())
     {
-        qDebug() << "Cannot open database:" << db.lastError();
+        //qDebug() << "Cannot open database:" << db.lastError();
     }
     else
     {
-        qDebug() << "database opened";
+        //qDebug() << "database opened";
     }
 }
 

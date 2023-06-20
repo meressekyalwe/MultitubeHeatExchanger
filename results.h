@@ -16,11 +16,11 @@ public:
 
     Results(GivenWidget* gw);
 
-    void setCurrentMaterial(GivenWidget* gw);
+    void setCurrentMaterial(GivenWidget* gw, DataBase& db);
 
-    void setCurrentHotFluid(GivenWidget* gw);
+    void setCurrentHotFluid(GivenWidget* gw, DataBase& db);
 
-    void setCurrentColdFluid(GivenWidget* gw);
+    void setCurrentColdFluid(GivenWidget* gw, DataBase& db);
 
     void setFromDb(DataBase& db, int t11, int t21);
 
@@ -39,6 +39,9 @@ public:
     S_Fluid ColdFluid;
     S_DesignData DesignData;
     S_Material Material;
+private:
+    S_Fluid _HotFluid;
+    S_Fluid _ColdFluid;
 };
 
 #endif // RESULTS_H
